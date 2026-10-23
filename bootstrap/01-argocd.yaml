@@ -13,3 +13,14 @@ spec:
   chart: argo-cd
   version: 10.10.5
   targetNamespace: argocd
+  valuesContent: |-
+    crds:
+      install: true
+    server:
+      replicas: 1
+    controller:
+      replicas: 1
+    repoServer:
+      replicas: 1
+    applicationSet:
+      replicas: 1

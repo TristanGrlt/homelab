@@ -23,7 +23,7 @@ argo-cd:
         args:
           - |
             apk add --no-cache curl ca-certificates
-            curl -sL -o /custom-tools/sops https://github.com/getsops/sops/releases/download/v3.8.1/sops-v3.8.1.linux-amd64
+            curl -sL -o /custom-tools/sops https://github.com/getsops/sops/releases/download/v3.8.1/sops-v3.8.1.linux.amd64
             chmod +x /custom-tools/sops
         volumeMounts:
           - mountPath: /custom-tools

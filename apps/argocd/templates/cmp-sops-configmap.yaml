@@ -17,7 +17,10 @@ data:
         args:
           - |
             find . -type f -name 'enc.*.yaml' | while read file; do
-              sops -d "$file" > "${file/enc./}"
+              dir=$(dirname "$file")
+              base=$(basename "$file")
+              dec_name="${base#enc.}"
+              sops -d "$file" > "$dir/$dec_name"
             done
             helm dependency update 
       generate:

@@ -1,6 +1,5 @@
 include common.mk
 
-K8S_CONTEXT = ${USER}-bare-pq1-cluster
 K8S_NS = argocd
 K8S_RELEASE = argocd
 
@@ -9,14 +8,14 @@ K8S_RELEASE = argocd
 ## --------------------------------------
 apply: ## apply manifests to ${K8S_CONTEXT}
 apply: yamls
-	kubectl --context ${K8S_CONTEXT} -n ${K8S_NS} apply -R -f yamls
+	kubectl -n ${K8S_NS} apply -R -f yamls
 
 ## --------------------------------------
 ##@ Delete
 ## --------------------------------------
 delete: ## delete manifests to ${K8S_CONTEXT}
 delete: yamls
-	kubectl --context ${K8S_CONTEXT} -n ${K8S_NS} delete -R -f yamls
+	kubectl -n ${K8S_NS} delete -R -f yamls
 
 ## --------------------------------------
 ##@ Manifests

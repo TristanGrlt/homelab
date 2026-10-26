@@ -19,7 +19,7 @@ data:
             find . -type f -name 'enc.*.yaml' | while read file; do
               sops -d "$file" > "${file/enc./}"
             done
-            helm dependency build
+            helm dependency update 
       generate:
         command: [bash, -c]
         args:

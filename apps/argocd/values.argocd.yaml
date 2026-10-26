@@ -2,3 +2,53 @@ argo-cd:
   server:
     ingress:
       enabled: false
+
+  repoServer:
+    volumes:
+      - name: cmp-plugin
+        configMap:
+          name: cmp-sops
+      - name: sops-key
+        secret:
+          secretName: sops-age-key
+      - name: custom-tools
+        emptyDir: {}
+
+    initContainers:
+      - name: install-sops
+        image: alpine:3.19
+        command: [sh, -c]
+        args:
+          - |
+            wget -O /custom-tools/sops https://github.com/getsops/sops/releases/download/v3.8.1/sops-v3.8.1.linux-amd64
+            chmod +x /custom-tools/sops
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools
+
+    extraContainers:
+      - name: cmp-sops
+        image: quay.io/argoproj/argocd:v2.10.5
+        command: [/var/run/argocd/argocd-cmp-server]
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+        env:
+          - name: SOPS_AGE_KEY_FILE
+            value: /sops-key/keys.txt
+        volumeMounts:
+          - mountPath: /var/run/argocd
+            name: var-files
+          - mountPath: /home/argocd/cmp-server/plugins
+            name: plugins
+          - mountPath: /tmp
+            name: tmp
+          - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: plugin.yaml
+            name: cmp-plugin
+          - mountPath: /usr/local/bin/sops
+            subPath: sops
+            name: custom-tools
+          - mountPath: /sops-key
+            name: sops-key
+            readOnly: true

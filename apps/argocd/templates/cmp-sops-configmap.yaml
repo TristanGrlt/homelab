@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cmp-sops
+  namespace: argocd
+data:
+  plugin.yaml: |
+    apiVersion: argoproj.io/v1alpha1
+    kind: ConfigManagementPlugin
+    metadata:
+      name: sops
+    spec:
+      version: v1.0
+      init:
+        command: [bash, -c]
+        args:
+          - |
+            find . -type f -name 'enc.*.yaml' | while read file; do
+              sops -d "$file" > "${file/enc./}"
+            done
+      generate:
+        command: [bash, -c]
+        args:
+          - |
+            helm template ${RELEASE} . ${HELM_EXTRA_ARGS}

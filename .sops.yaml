@@ -1,0 +1,9 @@
+keys:
+  - &tristan age1jhzqpnhehd690wst4xhqz6ld58wa3uc5w4rq9yeh69gc3jstkcwsncp6gm
+  - &cluster age1hsecgp6xnamhrlyzlvn3jv3p3yccjvnjpdz66a0x2j8neuna6a8s6jg03r
+creation_rules:
+  - path_regex: enc.*.yaml$
+    key_groups:
+    - age:
+      - *tristan
+      - *cluster

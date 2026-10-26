@@ -14,12 +14,12 @@ spec:
     targetRevision: HEAD
     path: apps/infra/cert-manager
     plugin:
-      name: sops
+      name: sops-v1.0
       env:
         - name: RELEASE
           value: cert-manager
         - name: HELM_EXTRA_ARGS
-          value: "-f values.cert-manager.yaml -f cert-manager.values.yaml"
+          value: "-f values.cert-manager-stack.yaml -f enc.cert-manager-stack.values.yaml"
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

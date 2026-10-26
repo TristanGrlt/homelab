@@ -16,7 +16,7 @@ argo-cd:
 
     initContainers:
       - name: install-sops
-        image: alpine:3.19
+        image: quay.io/argoproj/argocd:v2.10.5
         command: [sh, -c]
         args:
           - |

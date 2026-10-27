@@ -16,15 +16,17 @@ data:
         command: [bash, -c]
         args:
           - |
+            set -euo pipefail
             find . -type f -name 'enc.*.yaml' | while read file; do
               dir=$(dirname "$file")
               base=$(basename "$file")
               dec_name="${base#enc.}"
               sops -d "$file" > "$dir/$dec_name"
+              cat "$dir/$dec_name"
             done
             helm dependency update 
       generate:
         command: [bash, -c]
         args:
           - |
-            helm template ${RELEASE} . ${HELM_EXTRA_ARGS}
+            helm template --debug ${RELEASE} . ${HELM_EXTRA_ARGS}

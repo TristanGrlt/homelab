@@ -1,29 +1,21 @@
-apiVersion: argoproj.io/v1alpha1
-kind: ConfigManagementPlugin
+apiVersion: v1
+kind: ConfigMap
 metadata:
   name: cmp-sops
   namespace: argocd
 data:
   plugin.yaml: |
-    apiVersion: v1
-    kind: ConfigMap
+    apiVersion: argoproj.io/v1alpha1
+    kind: ConfigManagementPlugin
     metadata:
-      name: argocd-sops-plugin
-      namespace: argocd
-    data:
-      plugin.yaml: |
-        apiVersion: argoproj.io/v1alpha1
-        kind: ConfigManagementPlugin
-        metadata:
-          name: sops
-        spec:
-          version: v1.0
-          allowConcurrency: true
-          init:
-            command: ["/bin/sh", "-c"]
-            args: ["helm dependency build"]
-          generate:
-            command: ["/bin/sh", "-c"]
-            args: [
-              "sops -d enc.${ARGOCD_APP_NAME}.values.yaml > ${ARGOCD_APP_NAME}.values.yaml && helm template ${ARGOCD_ENV_RELEASE:-${ARGOCD_APP_NAME}} . ${ARGOCD_ENV_HELM_EXTRA_ARGS:-} -f ${ARGOCD_APP_NAME}.values.yaml"
-            ]
+      name: sops
+    spec:
+      version: v1.0
+      allowConcurrency: true
+      init:
+        command: ["/bin/sh", "-c"]
+        args: ["helm dependency update"]
+      generate:
+        command: ["/bin/sh", "-c"]
+        args:
+          - "sops -d enc.${ARGOCD_APP_NAME}.values.yaml > ${ARGOCD_APP_NAME}.values.yaml && helm template ${ARGOCD_ENV_RELEASE:-${ARGOCD_APP_NAME}} . ${ARGOCD_ENV_HELM_EXTRA_ARGS:-} -f ${ARGOCD_APP_NAME}.values.yaml"

@@ -52,6 +52,6 @@ argo-cd:
           - mountPath: /usr/local/bin/sops
             subPath: sops
             name: custom-tools
-          - mountPath: /sops-key/keys.txt
+          - mountPath: /sops-key
             name: sops-key
             readOnly: true

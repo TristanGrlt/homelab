@@ -5,28 +5,25 @@ metadata:
   namespace: argocd
 data:
   plugin.yaml: |
-    apiVersion: argoproj.io/v1alpha1
-    kind: ConfigManagementPlugin
+    apiVersion: v1
+    kind: ConfigMap
     metadata:
-      name: sops
-    spec:
-      version: v1.0
-      allowConcurrency: true
-      init:
-        command: [bash, -c]
-        args:
-          - |
-            set -euo pipefail
-            find . -type f -name 'enc.*.yaml' | while read file; do
-              dir=$(dirname "$file")
-              base=$(basename "$file")
-              dec_name="${base#enc.}"
-              sops -d "$file" > "$dir/$dec_name"
-              cat "$dir/$dec_name"
-            done
-            helm dependency update 
-      generate:
-        command: [bash, -c]
-        args:
-          - |
-            helm template --debug ${RELEASE} . ${HELM_EXTRA_ARGS}
+      name: argocd-sops-plugin
+      namespace: argocd
+    data:
+      plugin.yaml: |
+        apiVersion: argoproj.io/v1alpha1
+        kind: ConfigManagementPlugin
+        metadata:
+          name: sops
+        spec:
+          version: v1.0
+          allowConcurrency: true
+          init:
+            command: ["/bin/sh", "-c"]
+            args: ["helm dependency build"]
+          generate:
+            command: ["/bin/sh", "-c"]
+            args: [
+              "sops -d enc.${ARGOCD_APP_NAME}.values.yaml > ${ARGOCD_APP_NAME}.values.yaml && helm template ${ARGOCD_ENV_RELEASE:-${ARGOCD_APP_NAME}} . ${ARGOCD_ENV_HELM_EXTRA_ARGS:-} -f ${ARGOCD_APP_NAME}.values.yaml"
+            ]

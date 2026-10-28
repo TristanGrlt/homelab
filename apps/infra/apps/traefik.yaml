@@ -13,6 +13,9 @@ spec:
     repoURL: https://github.com/TristanGrlt/homelab.git
     targetRevision: HEAD
     path: apps/infra/traefik
+    helm:
+      valueFiles:
+        - values.traefik.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik

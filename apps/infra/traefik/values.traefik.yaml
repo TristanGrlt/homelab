@@ -1,0 +1,24 @@
+traefik:
+  providers:
+    kubernetesGateway:
+      enabled: true
+
+  gateway:
+    namespacePolicy: All
+    enabled: false
+
+  ports:
+    web:
+      port: 8000
+      exposedPort: 80
+      expose:
+        default: true
+
+    websecure:
+      port: 8443
+      exposedPort: 443
+      expose:
+        default: true
+
+  service:
+    type: NodePort

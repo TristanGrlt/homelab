@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-home-grltt
+  namespace: traefik
+spec:
+  secretName: wildcard-home-grltt-tls
+  issuerRef:
+    name: homelab-ca
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.home.grltt.fr"
+    - "home.grltt.fr"

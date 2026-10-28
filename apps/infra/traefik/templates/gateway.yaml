@@ -1,0 +1,30 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik
+  namespace: traefik
+  annotations:
+    cert-manager.io/cluster-issuer: homelab-ca
+spec:
+  gatewayClassName: traefik
+
+  listeners:
+    - name: http
+      hostname: "*.home.grltt.fr"
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: https
+      hostname: "*.home.grltt.fr"
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: wildcard-home-grltt-tls
+      allowedRoutes:
+        namespaces:
+          from: All

@@ -3,4 +3,4 @@ name: gateway-api
 description: Helm chart for the deployement of the Kubernetes Gateway API CRDs
 type: application
 version: 1.0.0
-appVersion: "1.2.1"
+appVersion: "1.6.3"

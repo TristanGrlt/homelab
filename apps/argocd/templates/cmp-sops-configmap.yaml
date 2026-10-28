@@ -18,4 +18,4 @@ data:
       generate:
         command: ["/bin/sh", "-c"]
         args:
-          - "sops -d enc.${ARGOCD_APP_NAME}.values.yaml > ${ARGOCD_APP_NAME}.values.yaml && helm template ${ARGOCD_ENV_RELEASE:-${ARGOCD_APP_NAME}} . ${ARGOCD_ENV_HELM_EXTRA_ARGS:-} -f ${ARGOCD_APP_NAME}.values.yaml"
+          - "sops -d enc.${ARGOCD_APP_NAME}.values.yaml > ${ARGOCD_APP_NAME}.values.yaml && helm template --namespace "${ARGOCD_APP_NAMESPACE}" ${ARGOCD_ENV_RELEASE:-${ARGOCD_APP_NAME}} . ${ARGOCD_ENV_HELM_EXTRA_ARGS:-} -f ${ARGOCD_APP_NAME}.values.yaml"

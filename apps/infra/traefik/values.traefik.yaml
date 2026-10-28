@@ -7,6 +7,9 @@ traefik:
     namespacePolicy: All
     enabled: false
 
+  gatewayClass:
+    enabled: false
+
   ports:
     web:
       port: 80

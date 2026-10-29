@@ -35,4 +35,5 @@ traefik:
     allowPrivilegeEscalation: false
 
   service:
-    type: NodePort
+    spec:
+      type: NodePort

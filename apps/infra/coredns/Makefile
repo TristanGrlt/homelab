@@ -1,6 +1,6 @@
 include common.mk
-K8S_NS = traefik
-K8S_RELEASE = traefik
+K8S_NS = coredns
+K8S_RELEASE = coredns
 
 ## --------------------------------------
 ##@ Apply
@@ -21,9 +21,9 @@ delete: yamls
 ## --------------------------------------
 manifests: ## build k8s manifests
 manifests: yamls
-yamls: dependencies traefik
+yamls: dependencies coredns
 
-traefik: dependencies
+coredns: dependencies
 	helm template --include-crds -n ${K8S_NS} ${K8S_RELEASE} . -f values.${@}.yaml --output-dir yamls
 
 ## --------------------------------------

@@ -3,6 +3,10 @@ argo-cd:
     ingress:
       enabled: false
 
+  configs:
+    params:
+      server.insecure: "true"
+
   repoServer:
     volumes:
       - name: cmp-plugin

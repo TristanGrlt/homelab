@@ -23,8 +23,11 @@ coredns:
         - name: template
           parameters: "IN A home.grltt.fr"
           configBlock: |-
-            match ^([a-z0-9-]+)\.home\.grltt\.fr\.$
+            match ^([a-z0-9-]+\.)+home\.grltt\.fr\.$
             answer "{{ .Name }} 60 IN A 192.168.1.24"
+
+        - name: forward
+          parameters: "home 192.168.1.1"
 
         - name: forward
           parameters: ". 1.1.1.1 1.0.0.1"

@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: coredns
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+  finalizers:
+    - resources-finalizer.argocd.resources-finalizer.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/TristanGrlt/homelab.git
+    targetRevision: HEAD
+    path: apps/infra/coredns
+    helm:
+      valueFiles:
+        - values.coredns.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: coredns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

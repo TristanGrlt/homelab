@@ -16,14 +16,12 @@ traefik:
       exposedPort: 80
       expose:
         default: true
-      nodePort: 30080
 
     websecure:
       port: 443
       exposedPort: 443
       expose:
         default: true
-      nodePort: 30443
 
   securityContext:
     capabilities:
@@ -36,4 +34,4 @@ traefik:
 
   service:
     spec:
-      type: NodePort
+      type: LoadBalancer

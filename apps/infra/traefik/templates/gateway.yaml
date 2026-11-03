@@ -4,7 +4,7 @@ metadata:
   name: traefik
   namespace: traefik
   annotations:
-    cert-manager.io/cluster-issuer: homelab-ca
+    cert-manager.io/cluster-issuer: homelab-ca-issuer
 spec:
   gatewayClassName: traefik
 
@@ -25,6 +25,8 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: wildcard-home-grltt-tls
+            group: ''
+            kind: Secret
       allowedRoutes:
         namespaces:
           from: All

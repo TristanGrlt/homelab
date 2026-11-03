@@ -3,9 +3,13 @@ kind: HTTPRoute
 metadata:
   name: argocd
   namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: "homelab-ca-issuer"
 spec:
   parentRefs:
-    - name: traefik
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: traefik
       namespace: traefik
       sectionName: https
 
@@ -18,5 +22,8 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: argocd-server
+        - group: ''
+          kind: Service
+          name: argocd-server
           port: 80
+          weight: 1

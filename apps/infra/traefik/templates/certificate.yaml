@@ -6,8 +6,9 @@ metadata:
 spec:
   secretName: wildcard-home-grltt-tls
   issuerRef:
-    name: homelab-ca
+    name: homelab-ca-issuer
     kind: ClusterIssuer
   dnsNames:
-    - "*.home.grltt.fr"
     - "home.grltt.fr"
+    - "*.home.grltt.fr"
+    - "*.argocd.home.grltt.fr"

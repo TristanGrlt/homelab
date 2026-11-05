@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/TristanGrlt/homelab.git
+    targetRevision: HEAD
+    path: apps/infra/authentik
+    plugin:
+      name: sops-v1.0
+      env:
+        - name: RELEASE
+          value: authentik
+        - name: HELM_EXTRA_ARGS
+          value: "-f values.authentik.yaml -f authentik.values.yaml"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: authentik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

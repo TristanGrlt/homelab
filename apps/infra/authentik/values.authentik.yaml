@@ -1,42 +1,50 @@
 authentik:
-  enabled: true
-  log_level: info
-  error_reporting:
-    enabled: false
-
-  web:
-    path: /
-    base_url: https://authentik.home.grltt.fr
-
-  email:
-    host: ""
-    port: 587
-    username: ""
-    password: ""
-    use_tls: false
-    use_ssl: false
-    from: ""
-
-server:
-  enabled: true
-  replicas: 1
-  ingress:
-    enabled: false
-
-worker:
-  enabled: true
-  replicas: 1
-
-blueprints:
-  configMaps:
-    - authentik-blueprints
-
-postgresql:
-  enabled: true
-  auth:
-    username: authentik
-    database: authentik
-  primary:
-    persistence:
-      enabled: true
-      size: 10Gi
+  authentik:
+    enabled: true
+    log_level: info
+    error_reporting:
+      enabled: false
+  
+    email:
+      host: ""
+      port: 587
+      username: ""
+      password: ""
+      use_tls: false
+      use_ssl: false
+      from: ""
+  
+  server:
+    enabled: true
+    replicas: 1
+    ingress:
+      enabled: false
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - authentik.home.grltt.fr
+        parentRefs:
+          - group: gateway.networking.k8s.io
+            kind: Gateway
+            name: internal-gateway
+            namespace: traefik
+            sectionName: https
+  
+  worker:
+    enabled: true
+    replicas: 1
+  
+  blueprints:
+    configMaps:
+      - authentik-blueprints
+  
+  postgresql:
+    enabled: true
+    auth:
+      username: authentik
+      database: authentik
+    primary:
+      persistence:
+        enabled: true
+        size: 8Gi

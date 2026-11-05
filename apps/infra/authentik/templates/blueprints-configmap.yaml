@@ -3,4 +3,6 @@ kind: ConfigMap
 metadata:
   name: authentik-blueprints
   namespace: {{ .Release.Namespace }}
-data: 
+data:
+{{ (.Files.Glob "blueprints/*.yaml").AsConfig | indent 2 }}
+

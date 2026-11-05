@@ -136,19 +136,6 @@ entries:
 
   - model: authentik_stages_prompt.prompt
     state: present
-    id: prompt-name
-    identifiers:
-      name: homelab-enrollment-name
-    attrs:
-      field_key: name
-      label: Name
-      type: text
-      required: true
-      placeholder: Name
-      order: 0
-
-  - model: authentik_stages_prompt.prompt
-    state: present
     id: prompt-email
     identifiers:
       name: homelab-enrollment-email
@@ -158,28 +145,72 @@ entries:
       type: email
       required: true
       placeholder: Email
-      order: 1
+      order: 3
+
+  - model: authentik_stages_prompt.prompt
+    state: present
+    id: prompt-mfa-method
+    identifiers:
+      name: homelab-enrollment-mfa-method
+    attrs:
+      field_key: mfa_method
+      label: Multi-factor authentication
+      type: radio-button-group
+      required: true
+      placeholder:
+        - label: TOTP authenticator app
+          value: totp
+        - label: WebAuthn security key or passkey
+          value: webauthn
+      order: 4
 
   - model: authentik_stages_prompt.promptstage
     state: present
-    id: prompt-stage-credentials
+    id: prompt-stage-account
     identifiers:
-      name: homelab-enrollment-credentials
+      name: homelab-enrollment-account
     attrs:
       fields:
         - !KeyOf prompt-username
         - !KeyOf prompt-password
         - !KeyOf prompt-password-repeat
-
-  - model: authentik_stages_prompt.promptstage
-    state: present
-    id: prompt-stage-details
-    identifiers:
-      name: homelab-enrollment-details
-    attrs:
-      fields:
-        - !KeyOf prompt-name
         - !KeyOf prompt-email
+        - !KeyOf prompt-mfa-method
+
+  - model: authentik_stages_authenticator_totp.authenticatortotpstage
+    state: present
+    id: mfa-totp-stage
+    identifiers:
+      name: homelab-enrollment-totp
+    attrs:
+      digits: 6
+      friendly_name: Homelab TOTP
+
+  - model: authentik_stages_authenticator_webauthn.authenticatorwebauthnstage
+    state: present
+    id: mfa-webauthn-stage
+    identifiers:
+      name: homelab-enrollment-webauthn
+    attrs:
+      friendly_name: Homelab WebAuthn
+
+  - model: authentik_policies_expression.expressionpolicy
+    state: present
+    id: mfa-totp-policy
+    identifiers:
+      name: homelab-enrollment-mfa-totp-selected
+    attrs:
+      expression: |
+        return context.get("prompt_data", {}).get("mfa_method") == "totp"
+
+  - model: authentik_policies_expression.expressionpolicy
+    state: present
+    id: mfa-webauthn-policy
+    identifiers:
+      name: homelab-enrollment-mfa-webauthn-selected
+    attrs:
+      expression: |
+        return context.get("prompt_data", {}).get("mfa_method") == "webauthn"
 
   - model: authentik_stages_user_write.userwritestage
     state: present
@@ -227,21 +258,21 @@ entries:
       stage: !KeyOf invitation-stage-admin
       order: 5
     attrs:
-      evaluate_on_plan: true
+      evaluate_on_plan: false
       re_evaluate_policies: true
 
   - model: authentik_flows.flowstagebinding
     state: present
     identifiers:
       target: !KeyOf enrollment-admin
-      stage: !KeyOf prompt-stage-credentials
+      stage: !KeyOf prompt-stage-account
       order: 10
 
   - model: authentik_flows.flowstagebinding
-    state: present
+    state: absent
     identifiers:
       target: !KeyOf enrollment-admin
-      stage: !KeyOf prompt-stage-details
+      stage: !Find [authentik_stages_prompt.promptstage, [name, homelab-enrollment-details]]
       order: 15
 
   - model: authentik_flows.flowstagebinding
@@ -253,10 +284,52 @@ entries:
 
   - model: authentik_flows.flowstagebinding
     state: present
+    id: enrollment-admin-totp-binding
+    identifiers:
+      target: !KeyOf enrollment-admin
+      stage: !KeyOf mfa-totp-stage
+      order: 30
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    state: present
+    identifiers:
+      policy: !KeyOf mfa-totp-policy
+      target: !KeyOf enrollment-admin-totp-binding
+      order: 0
+    attrs:
+      enabled: true
+      negate: false
+
+  - model: authentik_flows.flowstagebinding
+    state: present
+    id: enrollment-admin-webauthn-binding
+    identifiers:
+      target: !KeyOf enrollment-admin
+      stage: !KeyOf mfa-webauthn-stage
+      order: 40
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    state: present
+    identifiers:
+      policy: !KeyOf mfa-webauthn-policy
+      target: !KeyOf enrollment-admin-webauthn-binding
+      order: 0
+    attrs:
+      enabled: true
+      negate: false
+
+  - model: authentik_flows.flowstagebinding
+    state: present
     identifiers:
       target: !KeyOf enrollment-admin
       stage: !KeyOf user-login
-      order: 100
+      order: 25
 
   - model: authentik_flows.flowstagebinding
     state: present
@@ -265,21 +338,21 @@ entries:
       stage: !KeyOf invitation-stage-operator
       order: 5
     attrs:
-      evaluate_on_plan: true
+      evaluate_on_plan: false
       re_evaluate_policies: true
 
   - model: authentik_flows.flowstagebinding
     state: present
     identifiers:
       target: !KeyOf enrollment-operator
-      stage: !KeyOf prompt-stage-credentials
+      stage: !KeyOf prompt-stage-account
       order: 10
 
   - model: authentik_flows.flowstagebinding
-    state: present
+    state: absent
     identifiers:
       target: !KeyOf enrollment-operator
-      stage: !KeyOf prompt-stage-details
+      stage: !Find [authentik_stages_prompt.promptstage, [name, homelab-enrollment-details]]
       order: 15
 
   - model: authentik_flows.flowstagebinding
@@ -291,10 +364,52 @@ entries:
 
   - model: authentik_flows.flowstagebinding
     state: present
+    id: enrollment-operator-totp-binding
+    identifiers:
+      target: !KeyOf enrollment-operator
+      stage: !KeyOf mfa-totp-stage
+      order: 30
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    state: present
+    identifiers:
+      policy: !KeyOf mfa-totp-policy
+      target: !KeyOf enrollment-operator-totp-binding
+      order: 0
+    attrs:
+      enabled: true
+      negate: false
+
+  - model: authentik_flows.flowstagebinding
+    state: present
+    id: enrollment-operator-webauthn-binding
+    identifiers:
+      target: !KeyOf enrollment-operator
+      stage: !KeyOf mfa-webauthn-stage
+      order: 40
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    state: present
+    identifiers:
+      policy: !KeyOf mfa-webauthn-policy
+      target: !KeyOf enrollment-operator-webauthn-binding
+      order: 0
+    attrs:
+      enabled: true
+      negate: false
+
+  - model: authentik_flows.flowstagebinding
+    state: present
     identifiers:
       target: !KeyOf enrollment-operator
       stage: !KeyOf user-login
-      order: 100
+      order: 25
 
   - model: authentik_flows.flowstagebinding
     state: present
@@ -303,21 +418,21 @@ entries:
       stage: !KeyOf invitation-stage-user
       order: 5
     attrs:
-      evaluate_on_plan: true
+      evaluate_on_plan: false
       re_evaluate_policies: true
 
   - model: authentik_flows.flowstagebinding
     state: present
     identifiers:
       target: !KeyOf enrollment-user
-      stage: !KeyOf prompt-stage-credentials
+      stage: !KeyOf prompt-stage-account
       order: 10
 
   - model: authentik_flows.flowstagebinding
-    state: present
+    state: absent
     identifiers:
       target: !KeyOf enrollment-user
-      stage: !KeyOf prompt-stage-details
+      stage: !Find [authentik_stages_prompt.promptstage, [name, homelab-enrollment-details]]
       order: 15
 
   - model: authentik_flows.flowstagebinding
@@ -329,7 +444,50 @@ entries:
 
   - model: authentik_flows.flowstagebinding
     state: present
+    id: enrollment-user-totp-binding
+    identifiers:
+      target: !KeyOf enrollment-user
+      stage: !KeyOf mfa-totp-stage
+      order: 30
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    state: present
+    identifiers:
+      policy: !KeyOf mfa-totp-policy
+      target: !KeyOf enrollment-user-totp-binding
+      order: 0
+    attrs:
+      enabled: true
+      negate: false
+
+  - model: authentik_flows.flowstagebinding
+    state: present
+    id: enrollment-user-webauthn-binding
+    identifiers:
+      target: !KeyOf enrollment-user
+      stage: !KeyOf mfa-webauthn-stage
+      order: 40
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_policies.policybinding
+    state: present
+    identifiers:
+      policy: !KeyOf mfa-webauthn-policy
+      target: !KeyOf enrollment-user-webauthn-binding
+      order: 0
+    attrs:
+      enabled: true
+      negate: false
+
+  - model: authentik_flows.flowstagebinding
+    state: present
     identifiers:
       target: !KeyOf enrollment-user
       stage: !KeyOf user-login
-      order: 100
+      order: 25
+

@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-prompt-account-stage
+entries:
+  - model: authentik_stages_prompt.promptstage
+    state: present
+    id: custom-prompt-account
+    identifiers:
+      name: custom-prompt-account
+    attrs:
+      fields:
+        - !Find [authentik_stages_prompt.prompt, [name, custom-username]]
+        - !Find [authentik_stages_prompt.prompt, [name, custom-password]]
+        - !Find [authentik_stages_prompt.prompt, [name, custom-password-repeat]]
+        - !Find [authentik_stages_prompt.prompt, [name, custom-email]]
+        - !Find [authentik_stages_prompt.prompt, [name, custom-mfa-method]]

@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-user-login-stage
+entries:
+  - model: authentik_stages_user_login.userloginstage
+    state: present
+    id: custom-user-login
+    identifiers:
+      name: custom-user-login

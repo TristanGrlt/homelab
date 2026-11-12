@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-mfa-totp-stage
+entries:
+  - model: authentik_stages_authenticator_totp.authenticatortotpstage
+    state: present
+    id: custom-mfa-totp
+    identifiers:
+      name: custom-mfa-totp
+    attrs:
+      digits: 6
+      friendly_name: Custom TOTP

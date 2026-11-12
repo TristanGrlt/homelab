@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-enrollment-admin-flow
+entries:
+  - model: authentik_flows.flow
+    state: present
+    id: custom-enrollment-admin
+    identifiers:
+      slug: custom-enrollment-admin
+    attrs:
+      name: Custom enrollment - administrator
+      title: Create your administrator account
+      designation: enrollment
+      authentication: require_unauthenticated

@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-mfa-webauthn-stage
+entries:
+  - model: authentik_stages_authenticator_webauthn.authenticatorwebauthnstage
+    state: present
+    id: custom-mfa-webauthn
+    identifiers:
+      name: custom-mfa-webauthn
+    attrs:
+      friendly_name: Custom WebAuthn

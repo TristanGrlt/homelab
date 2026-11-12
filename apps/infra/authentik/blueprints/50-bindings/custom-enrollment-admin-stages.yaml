@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-enrollment-admin-stage-bindings
+entries:
+  - model: authentik_flows.flowstagebinding
+    state: present
+    id: custom-enrollment-admin-binding-invitation
+    identifiers:
+      target: !Find [authentik_flows.flow, [slug, custom-enrollment-admin]]
+      stage: !Find [authentik_stages_invitation.invitationstage, [name, custom-invitation-admin]]
+      order: 5
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_flows.flowstagebinding
+    state: present
+    id: custom-enrollment-admin-binding-prompt
+    identifiers:
+      target: !Find [authentik_flows.flow, [slug, custom-enrollment-admin]]
+      stage: !Find [authentik_stages_prompt.promptstage, [name, custom-prompt-account]]
+      order: 10
+
+  - model: authentik_flows.flowstagebinding
+    state: present
+    id: custom-enrollment-admin-binding-user-write
+    identifiers:
+      target: !Find [authentik_flows.flow, [slug, custom-enrollment-admin]]
+      stage: !Find [authentik_stages_user_write.userwritestage, [name, custom-user-write-admin]]
+      order: 20
+
+  - model: authentik_flows.flowstagebinding
+    state: present
+    id: custom-enrollment-admin-binding-totp
+    identifiers:
+      target: !Find [authentik_flows.flow, [slug, custom-enrollment-admin]]
+      stage: !Find [authentik_stages_authenticator_totp.authenticatortotpstage, [name, custom-mfa-totp]]
+      order: 30
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_flows.flowstagebinding
+    state: present
+    id: custom-enrollment-admin-binding-webauthn
+    identifiers:
+      target: !Find [authentik_flows.flow, [slug, custom-enrollment-admin]]
+      stage: !Find [authentik_stages_authenticator_webauthn.authenticatorwebauthnstage, [name, custom-mfa-webauthn]]
+      order: 40
+    attrs:
+      evaluate_on_plan: false
+      re_evaluate_policies: true
+
+  - model: authentik_flows.flowstagebinding
+    state: present
+    id: custom-enrollment-admin-binding-login
+    identifiers:
+      target: !Find [authentik_flows.flow, [slug, custom-enrollment-admin]]
+      stage: !Find [authentik_stages_user_login.userloginstage, [name, custom-user-login]]
+      order: 50

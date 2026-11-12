@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-user-write-admin-stage
+entries:
+  - model: authentik_stages_user_write.userwritestage
+    state: present
+    id: custom-user-write-admin
+    identifiers:
+      name: custom-user-write-admin
+    attrs:
+      user_creation_mode: always_create
+      user_type: internal
+      user_path_template: users/internal
+      create_users_group: !Find [authentik_core.group, [name, custom-admins]]

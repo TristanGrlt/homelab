@@ -4,5 +4,7 @@ metadata:
   name: authentik-blueprints
   namespace: {{ .Release.Namespace }}
 data:
-{{ (.Files.Glob "blueprints/*.yaml").AsConfig | indent 2 }}
-
+{{- range $path, $_ := .Files.Glob "blueprints/**.yaml" }}
+  {{ $path | trimPrefix "blueprints/" | replace "/" "-" }}: |-
+{{ $.Files.Get $path | indent 4 }}
+{{- end }}

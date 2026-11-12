@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-mfa-method-prompt
+entries:
+  - model: authentik_stages_prompt.prompt
+    state: present
+    id: custom-mfa-method
+    identifiers:
+      name: custom-mfa-method
+    attrs:
+      field_key: mfa_method
+      label: Multi-factor authentication
+      type: radio-button-group
+      required: true
+      placeholder:
+        - label: TOTP authenticator app
+          value: totp
+        - label: WebAuthn security key or passkey
+          value: webauthn
+      order: 4

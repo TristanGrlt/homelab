@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-email-prompt
+entries:
+  - model: authentik_stages_prompt.prompt
+    state: present
+    id: custom-email
+    identifiers:
+      name: custom-email
+    attrs:
+      field_key: email
+      label: Email
+      type: email
+      required: true
+      placeholder: Email
+      order: 3

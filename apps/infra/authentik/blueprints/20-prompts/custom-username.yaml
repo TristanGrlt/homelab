@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-username-prompt
+entries:
+  - model: authentik_stages_prompt.prompt
+    state: present
+    id: custom-username
+    identifiers:
+      name: custom-username
+    attrs:
+      field_key: username
+      label: Username
+      type: username
+      required: true
+      placeholder: Username
+      order: 0

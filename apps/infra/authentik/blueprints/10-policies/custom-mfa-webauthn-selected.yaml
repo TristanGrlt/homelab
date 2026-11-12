@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-mfa-webauthn-selected-policy
+entries:
+  - model: authentik_policies_expression.expressionpolicy
+    state: present
+    id: custom-mfa-webauthn-selected
+    identifiers:
+      name: custom-mfa-webauthn-selected
+    attrs:
+      expression: |
+        return context.get("prompt_data", {}).get("mfa_method") == "webauthn"

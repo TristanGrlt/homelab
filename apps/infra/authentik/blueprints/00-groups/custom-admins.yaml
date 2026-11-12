@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://version-2026-8.goauthentik.io/blueprints/schema.json
+version: 1
+metadata:
+  name: custom-admins-group
+entries:
+  - model: authentik_core.group
+    state: present
+    id: custom-admins
+    identifiers:
+      name: custom-admins
+    attrs:
+      is_superuser: true

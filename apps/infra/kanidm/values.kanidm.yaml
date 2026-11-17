@@ -1,6 +1,3 @@
-kaniop:
-  replicaCount: 1
-
 kanidm:
   name: auth
   domain: auth.home.grltt.fr

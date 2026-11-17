@@ -1,0 +1,29 @@
+keycloak:
+  auth:
+    adminUser: user
+    # adminPassword: sops encrypted
+  
+  production: true
+  proxyHeaders: xforwarded
+  
+  extraEnvVars:
+    - name: KEYCLOAK_EXTRA_ARGS
+      value: --import-realm
+  
+  extraVolumes: 
+    - name: realm-config
+      ConfigMap:
+        name: keycloak-realm
+  
+  extraVolumeMounts: 
+    - name: realm-config
+      mountPath: /opt/bitnami/keycloak/data/import
+      readOnly: true
+  
+  postgresql:
+    enabled: true
+    auth:
+      # postgresPassword: sops encrypted
+      username: bn_keycloak
+      # password: sops encrypted
+      database: bitnami_keycloak

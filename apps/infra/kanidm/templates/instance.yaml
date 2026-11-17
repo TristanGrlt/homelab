@@ -8,8 +8,7 @@ metadata:
 spec:
   domain: {{ .Values.kanidm.domain }}
   origin: {{ .Values.kanidm.origin }}
-  tls:
-    secretName: {{ .Values.tls.secretName }}
+  tlsSecretName: {{ .Values.tls.secretName }}
   storage:
     volumeClaimTemplate:
       spec:

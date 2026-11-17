@@ -13,13 +13,9 @@ spec:
     repoURL: https://github.com/TristanGrlt/homelab.git
     targetRevision: HEAD
     path: apps/infra/kanidm
-    plugin:
-      name: sops-v1.0
-      env:
-        - name: RELEASE
-          value: kanidm
-        - name: HELM_EXTRA_ARGS
-          value: "-f values.kanidm.yaml -f kanidm.values.yaml"
+    helm:
+      valueFiles:
+        - values.kanidm.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: kanidm

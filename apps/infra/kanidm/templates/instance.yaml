@@ -10,5 +10,11 @@ spec:
   origin: {{ .Values.kanidm.origin }}
   tls:
     secretName: {{ .Values.tls.secretName }}
-  persistence:
-    size: {{ .Values.kanidm.storageSize }}
+  storage:
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.kanidm.storageSize }}

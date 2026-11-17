@@ -1,0 +1,6 @@
+dependencies:
+- name: kaniop
+  repository: oci://ghcr.io/pando85/helm-charts
+  version: 0.23.0
+digest: sha256:117c25a2fc5ad160147d0474c8e0efd7b37432fc304a97031189d921ddb1a527
+generated: "2026-11-17T23:08:54.124649424+01:00"

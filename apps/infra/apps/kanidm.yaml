@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: keycloak
+  name: kanidm
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
@@ -12,17 +12,17 @@ spec:
   source:
     repoURL: https://github.com/TristanGrlt/homelab.git
     targetRevision: HEAD
-    path: apps/infra/keycloak
+    path: apps/infra/kanidm
     plugin:
       name: sops-v1.0
       env:
         - name: RELEASE
-          value: cert-manager
+          value: kanidm
         - name: HELM_EXTRA_ARGS
-          value: "-f values.keycloak.yaml -f keycloak.values.yaml"
+          value: "-f values.kanidm.yaml -f kanidm.values.yaml"
   destination:
     server: https://kubernetes.default.svc
-    namespace: keycloak
+    namespace: kanidm
   syncPolicy:
     automated:
       prune: true

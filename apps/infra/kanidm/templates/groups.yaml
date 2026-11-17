@@ -1,0 +1,15 @@
+{{- range .Values.groups }}
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  kanidmRef:
+    name: {{ $.Values.kanidm.name }}
+  members:
+    {{- toYaml .members | nindent 4 }}
+{{- end }}

@@ -1,0 +1,59 @@
+kaniop:
+  replicaCount: 1
+
+kanidm:
+  name: auth
+  domain: auth.home.grltt.fr
+  origin: https://auth.home.grltt.fr
+  storageSize: 2Gi
+
+tls:
+  secretName: kanidm-tls
+  clusterIssuer: homelab-ca-issuer
+  caConfigMapName: homelab-ca-bundle
+  caCert: |
+    -----BEGIN CERTIFICATE-----
+    MIIDFzCCAf+gAwIBAgIUYBhUV6bn7MUmBH/SPOdsTfbLzkAwDQYJKoZIhvcNAQEL
+    BQAwGzEZMBcGA1UEAwwQSG9tZWxhYiBMb2NhbCBDQTAeFw0yNjEwMjYxODE2MjNa
+    Fw0zNjEwMjMxODE2MjNaMBsxGTAXBgNVBAMMEEhvbWVsYWIgTG9jYWwgQ0EwggEi
+    MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC2suAgJ9Bg9W5lrbho4CqxVV3L
+    Pmec9FeR/aedv2Xw1QEQd6RaUDKCpX3B9e4+lMUmA7EOJtpf8DsPuVcEgcFHWzeU
+    NYaEG7FhtV+ZwGMwEZZekMM4DJMnLbIrhR3VnX9UeqJgGSnhG87BiAm4KyqH/CNg
+    equL2euwshK/cIQTTL2QFyBonnQrVVH6cfnUYnlf5deQtzDCEt3Go3fyb8i6P3Rb
+    P9foo/argiwCtZhcJVPcbUL8uXkQDNQbh8UFNvurU0lAMG8HIq47TX+15AP48sZ/
+    cdvWIxu1WXzoXrV3c3ve53pXOqXaSo6krjcJHABlnZoB1n9nZ8QNY8JYq+kDAgMB
+    AAGjUzBRMB0GA1UdDgQWBBRNW7a8wG3EQAMDAaR+ysvijoHmtzAfBgNVHSMEGDAW
+    gBRNW7a8wG3EQAMDAaR+ysvijoHmtzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3
+    DQEBCwUAA4IBAQCRGmmA1ZG+/GpJArHl5qhX0vcXXKTqyaAtQwrH+9pNII8zhSeg
+    S2/j0XC8tA0z477JO8ulrIYt4yl8mWijrD++YIewjga7krs4WjS+W8y2yPMTVHzL
+    gwmaGBcsEj4j+QP8xXRk3ljP488X69lywDACvYGcXTw1CaxEDIq/b1gt3T7zWYrc
+    Lh6gGOL4Nzs8dQtOiWIC/z8IcFsBYvwJj3HCLpnwRD4ECTk2d76apJaaFcBrgr5S
+    24AHMQgzg7qZ1VVrAwdV4zf8gUHJOA+1Iatf2y5RKajnqWZzDZH875as2slPnSVl
+    T57IVTaWOkaQdJ0KQIa2bf3PRhHKz9ZJGTL6
+    -----END CERTIFICATE-----
+
+gateway:
+  name: internal-gateway
+  namespace: traefik
+  sectionName: https
+
+users:
+  - name: tristan
+    displayname: "Tristan"
+    mail: "tristan.groult@gmail.com"
+
+groups:
+  - name: admins
+    members:
+      - tristan
+
+oauth2Clients:
+  - name: argocd
+    namespace: argocd
+    displayname: "ArgoCD"
+    origin: "https://argocd.argocd.home.grltt.fr"
+    redirectUrls:
+      - "https://argocd.argocd.home.grltt.fr/auth/callback"
+    groups:
+      - ctf-admins
+      - ctf-devs

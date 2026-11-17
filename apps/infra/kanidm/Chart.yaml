@@ -1,0 +1,8 @@
+apiVersion: v2
+name: cert-manager
+type: application
+version: 1.0.0
+dependencies:
+  - name: kaniop 
+    version: v0.23.0
+    repository: "oci://ghcr.io/pando85/helm-charts"

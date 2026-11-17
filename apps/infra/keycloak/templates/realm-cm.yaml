@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: keycloak-realm
-data:
-  homelab-realm.json: |
-{{ .Files.Get "config/homelab-realm.json" | indent 4 }}

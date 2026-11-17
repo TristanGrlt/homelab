@@ -1,0 +1,14 @@
+apiVersion: kaniop.rs/v1beta1
+kind: Kanidm
+metadata:
+  name: {{ .Values.kanidm.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  domain: {{ .Values.kanidm.domain }}
+  origin: {{ .Values.kanidm.origin }}
+  tls:
+    secretName: {{ .Values.tls.secretName }}
+  persistence:
+    size: {{ .Values.kanidm.storageSize }}

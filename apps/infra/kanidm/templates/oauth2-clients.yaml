@@ -1,0 +1,24 @@
+{{- range .Values.oauth2Clients }}
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: {{ .name }}
+  namespace: {{ .namespace | default $.Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  kanidmRef:
+    name: {{ $.Values.kanidm.name }}
+    namespace: {{ $.Release.Namespace }}
+  displayname: {{ .displayname | quote }}
+  origin: {{ .origin | quote }}
+  redirectUrl:
+    {{- toYaml .redirectUrls | nindent 4 }}
+  preferShortUsername: true
+  scopeMap:
+    {{- range .groups }}
+    - group: {{ . }}
+      scopes: [openid, profile, email, groups]
+    {{- end }}
+{{- end }}

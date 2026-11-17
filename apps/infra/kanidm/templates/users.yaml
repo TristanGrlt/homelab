@@ -1,0 +1,19 @@
+{{- range .Values.users }}
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmPersonAccount
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  kanidmRef:
+    name: {{ $.Values.kanidm.name }}
+  personAttributes:
+    displayname: {{ .displayname | quote }}
+    {{- if .mail }}
+    mail:
+      - {{ .mail | quote }}
+    {{- end }}
+{{- end }}

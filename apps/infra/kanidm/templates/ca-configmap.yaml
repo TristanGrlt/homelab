@@ -1,0 +1,12 @@
+{{- if .Values.tls.caCert }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.tls.caConfigMapName }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+data:
+  ca.crt: |
+{{ .Values.tls.caCert | indent 4 }}
+{{- end }}

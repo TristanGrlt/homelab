@@ -1,6 +1,6 @@
 include common.mk
-K8S_NS = keycloak
-K8S_RELEASE = keycloak
+K8S_NS = kanidm
+K8S_RELEASE = kanidm
 
 ## --------------------------------------
 ##@ Apply
@@ -21,9 +21,9 @@ delete: yamls
 ## --------------------------------------
 manifests: ## build k8s manifests
 manifests: yamls
-yamls: dependencies keycloak
+yamls: dependencies kanidm
 
-keycloak: dependencies
+kanidm: dependencies
 	helm template --include-crds -n ${K8S_NS} ${K8S_RELEASE} . -f values.${@}.yaml -f <(sops -d enc.$@.values.yaml) --output-dir yamls
 
 ## --------------------------------------

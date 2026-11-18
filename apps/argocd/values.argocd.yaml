@@ -1,4 +1,7 @@
 argo-cd:
+  dex:
+    enabled: false
+
   server:
     ingress:
       enabled: false
@@ -6,6 +9,27 @@ argo-cd:
   configs:
     params:
       server.insecure: "true"
+    cm:
+      url: https://argocd.argocd.home.grltt.fr
+      oidc.config: |
+        name: Kanidm
+        issuer: https://auth.grltt.fr/oauth2/openid/argocd
+        clientID: argocd
+        clientSecret: $argocd-kanidm-oauth2-credentials:client-secret
+        requestedScopes:
+          - openid
+          - profile
+          - email
+          - groups
+        requestedIDTokenClaims:
+          groups:
+            essential: true
+
+    rbac:
+      policy.default: role:readonly
+      policy.csv: |
+        g, admins@auth.grltt.fr, role:admin
+      scopes: '[groups, email]'
 
   repoServer:
     volumes:

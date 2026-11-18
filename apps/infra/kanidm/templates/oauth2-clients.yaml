@@ -19,6 +19,9 @@ spec:
   secretTemplate:
     {{- toYaml .secretTemplate | nindent 4 }}
   {{- end }}
+  {{- if .allowInsecureClientDisablePkce }}
+  allowInsecureClientDisablePkce: {{ .allowInsecureClientDisablePkce }}
+  {{- end }}
   preferShortUsername: true
   scopeMap:
     {{- range .groups }}

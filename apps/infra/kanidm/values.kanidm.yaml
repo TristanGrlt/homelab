@@ -51,6 +51,7 @@ oauth2Clients:
     origin: "https://argocd.argocd.home.grltt.fr"
     redirectUrls:
       - "https://argocd.argocd.home.grltt.fr/auth/callback"
+    allowInsecureClientDisablePkce: true
     secretTemplate:
       labels:
         app.kubernetes.io/part-of: argocd

@@ -6,3 +6,6 @@ dependencies:
   - name: cert-manager
     version: v1.21.3
     repository: https://charts.jetstack.io
+  - name: cert-manager-webhook-ovh
+    version: 0.9.19
+    repository: https://aureq.github.io/cert-manager-webhook-ovh/

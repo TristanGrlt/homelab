@@ -14,7 +14,7 @@ argo-cd:
       oidc.config: |
         name: Kanidm
         issuer: https://auth.grltt.fr/oauth2/openid/argocd
-        clientID: argocd
+        clientID: $argocd-kanidm-oauth2-credentials:client-id 
         clientSecret: $argocd-kanidm-oauth2-credentials:client-secret
         requestedScopes:
           - openid

@@ -24,4 +24,5 @@ spec:
     name: letsencrypt-ca-issuer
     kind: ClusterIssuer
   dnsNames:
-    - "auth.grltt.fr"
+    - - "grltt.fr"
+    - "*.grltt.fr"

@@ -29,7 +29,7 @@ spec:
           from: All
 
     - name: https-public
-      hostname: "auth.grltt.fr"
+      hostname: "*.grltt.fr"
       protocol: HTTPS
       port: 443
       tls:

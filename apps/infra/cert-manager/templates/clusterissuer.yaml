@@ -23,6 +23,7 @@ spec:
             solverName: ovh
             config:
               endpoint: ovh-eu
+              authenticationMethod: application
               applicationKeyRef:
                 name: ovh-credentials
                 key: applicationKey

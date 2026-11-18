@@ -9,6 +9,7 @@ spec:
   domain: {{ .Values.kanidm.domain }}
   origin: {{ .Values.kanidm.origin }}
   tlsSecretName: {{ .Values.tls.secretName }}
+  oauth2ClientNamespaceSelector: {}
   replicaGroups:
     - name: default
       replicas: 1

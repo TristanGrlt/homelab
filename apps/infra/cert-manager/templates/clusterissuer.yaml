@@ -5,3 +5,22 @@ metadata:
 spec:
   ca:
     secretName: homelab-ca-secret
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-ca-issuer
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: je-suis.ton-pere@sw.com
+    privateKeySecretRef:
+      name: letsencrypt-ca-secret
+    solvers:
+      - http01:
+          gatewayHTTPRoute:
+            parentRefs:
+              - group: gateway.networking.k8s.io
+                name: internal-gateway
+                namespace: traefik
+                kind: Gateway

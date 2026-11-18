@@ -15,6 +15,10 @@ spec:
   origin: {{ .origin | quote }}
   redirectUrl:
     {{- toYaml .redirectUrls | nindent 4 }}
+  {{- if .secretTemplate }}
+  secretTemplate:
+    {{- toYaml .secretTemplate | nindent 4 }}
+  {{- end }}
   preferShortUsername: true
   scopeMap:
     {{- range .groups }}

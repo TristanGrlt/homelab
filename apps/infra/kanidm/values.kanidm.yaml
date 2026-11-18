@@ -1,7 +1,7 @@
 kanidm:
   name: auth
-  domain: auth.home.grltt.fr
-  origin: https://auth.home.grltt.fr
+  domain: auth.grltt.fr
+  origin: https://auth.grltt.fr
   storageSize: 2Gi
 
 tls:
@@ -32,7 +32,7 @@ tls:
 gateway:
   name: internal-gateway
   namespace: traefik
-  sectionName: https
+  sectionName: https-public
 
 users:
   - name: tristan
@@ -52,5 +52,5 @@ oauth2Clients:
     redirectUrls:
       - "https://argocd.argocd.home.grltt.fr/auth/callback"
     groups:
-      - ctf-admins
-      - ctf-devs
+      - admins
+

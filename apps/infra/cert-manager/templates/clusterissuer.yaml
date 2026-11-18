@@ -17,10 +17,18 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-ca-secret
     solvers:
-      - http01:
-          gatewayHTTPRoute:
-            parentRefs:
-              - group: gateway.networking.k8s.io
-                name: internal-gateway
-                namespace: traefik
-                kind: Gateway
+      - dns01:
+          webhook:
+            groupName: acme.grp.ovh.com
+            solverName: ovh
+            config:
+              endpoint: ovh-eu
+              applicationKeyRef:
+                name: ovh-credentials
+                key: applicationKey
+              applicationSecretRef:
+                name: ovh-credentials
+                key: applicationSecret
+              consumerKeyRef:
+                name: ovh-credentials
+                key: consumerKey

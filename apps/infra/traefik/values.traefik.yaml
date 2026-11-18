@@ -34,4 +34,5 @@ traefik:
 
   service:
     spec:
+      externalTrafficPolicy: Local
       type: LoadBalancer

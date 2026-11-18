@@ -70,13 +70,13 @@ New users are created without credentials. To allow a user to set their own pass
 
 ```bash
 # Authenticate as idm_admin
-kanidm login -H https://auth.home.grltt.fr -D idm_admin
+kanidm login -H https://auth.grltt.fr -D idm_admin
 
 # Generate a one-time onboarding link 
-kanidm person credential create-reset-token -H https://auth.home.grltt.fr <username>
+kanidm person credential create-reset-token -H https://auth.grltt.fr <username>
 ```
 
-Send the resulting `https://auth.home.grltt.fr/ui/reset?token=...` URL to the user to complete their account setup.
+Send the resulting `https://auth.grltt.fr/ui/reset?token=...` URL to the user to complete their account setup.
 
 ### Verify Reconciliation Status
 

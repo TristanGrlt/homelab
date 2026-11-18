@@ -13,7 +13,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: je-suis.ton-pere@sw.com
+    email: tristan.groult@gmail.com
     privateKeySecretRef:
       name: letsencrypt-ca-secret
     solvers:
@@ -30,6 +30,6 @@ spec:
               applicationSecretRef:
                 name: ovh-credentials
                 key: applicationSecret
-              consumerKeyRef:
+              applicationConsumerKeyRef:
                 name: ovh-credentials
                 key: consumerKey

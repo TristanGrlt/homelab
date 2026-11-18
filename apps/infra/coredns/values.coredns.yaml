@@ -26,6 +26,18 @@ coredns:
             match ^([a-z0-9-]+\.)+home\.grltt\.fr\.$
             answer "{{ .Name }} 60 IN A 192.168.1.24"
 
+        - name: template
+          parameters: "IN A grltt.fr"
+          configBlock: |-
+            match ^([a-z0-9-]+\.)+grltt\.fr\.$
+            answer "{{ .Name }} 60 IN A 192.168.1.24"
+
+        - name: template
+          parameters: "IN AAAA grltt.fr"
+          configBlock: |-
+            match ^([a-z0-9-]+\.)+grltt\.fr\.$
+            rcode NOERROR
+
         - name: forward
           parameters: "home 192.168.1.1"
 
